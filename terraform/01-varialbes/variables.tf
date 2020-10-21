@@ -1,5 +1,7 @@
 variable "aws_vpc_name" {
-  type = string
+  type  = string
+  description = "This is the name of the vpc"
+  default = null
 }
 
 variable "aws_subnet_name" {

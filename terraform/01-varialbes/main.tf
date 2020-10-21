@@ -16,7 +16,7 @@ resource "aws_subnet" "aws_subnet_definition-az1" {
   cidr_block = var.aws_subnet_cidr_block
 
   tags = {
-    Name = var.aws_subnet_name
+    Name = "${var.aws_vpc_name}-${var.aws_subnet_name}"
   }
 }
 
@@ -29,15 +29,15 @@ resource "aws_vpc_dhcp_options_association" "dns_resolver" {
   dhcp_options_id = aws_vpc_dhcp_options.dns_resolver.id
 }
 
-resource "aws_security_group" "allow_tls" {
+resource "aws_security_group" "allow_remote" {
   name        = "allow_remote"
   description = "Allow remote inbound traffic"
   vpc_id      = aws_vpc.aws_vpc_definition.id
 
   ingress {
     description = "SSH"
-    from_port   = 22
-    to_port     = 22
+    from_port   = var.aws_from_port_ingress
+    to_port     = var.aws_to_port_ingress
     protocol    = "tcp"
     cidr_blocks = [aws_vpc.aws_vpc_definition.cidr_block]
   }
